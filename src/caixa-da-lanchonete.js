@@ -24,25 +24,34 @@ class CaixaDaLanchonete {
         }
 
         for (const element of itens) {
-            let pedido = 'a';
-            let qtde = '0';
+            let pedido;
+            let qtde;
+            let confirmaPedido;
             let indexVirgula = element.indexOf(",");
-            pedido = element.substr(0, indexVirgula - 1);
+            pedido = element.substr(0, indexVirgula);
             qtde = element.substr(indexVirgula + 1);
             if(qtde <= 0) {
                 return "Quantidade inválida!"
             }
             for (let i = 0; i < codigo.length; i++) {
-                if(pedido == codigo[i])
+                if(codigo[i] == pedido)
                 {
-                    precoTotal = qtde * valor[i];
-                    precoTotal += (precoTotal * variacaoDePreco);
+                    confirmaPedido = true;
+                    precoTotal += qtde * valor[i];
+                    break;
                 } else {
-                    return "Item inválido!";
+                    confirmaPedido = false;
                 }
             }
+            if(confirmaPedido == false)
+            {
+                return "Item inválido!";
+            }
         }
-        return `R$ ${precoTotal.toFixed(2)}`;
+        precoTotal += (precoTotal * variacaoDePreco);
+        precoTotal = String(precoTotal.toFixed(2));
+        precoTotal = precoTotal.replace('.', ',');
+        return `R$ ${precoTotal}`;
     }
 
 }
